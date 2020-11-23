@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 public class ProfileTest {
     @Test
-    public void test() {
+    public void matchAnswerFalseWhenMustMatchCriteriaNotMet() {
         // given
         Profile profile = new Profile("Bull Hockey, Inc.");
         Question question = new BooleanQuestion(1, "Got bonuses?");
@@ -19,8 +19,10 @@ public class ProfileTest {
         criteria.add(criterion);
 
         // when
+        boolean matches = profile.matches(criteria);
 
         // then
+        assertFalse(matches);
     }
 
 }
