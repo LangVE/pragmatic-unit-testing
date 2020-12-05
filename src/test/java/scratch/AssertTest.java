@@ -3,7 +3,7 @@ package scratch;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -77,5 +77,26 @@ public class AssertTest {
         public boolean hasPositiveBalance() {
             return balance > 0;
         }
+    }
+
+    @Test
+    public void depositIncreasesBalance_hamcrestAssertTrue() {
+        // given
+
+        // when
+        account.deposit(50);
+
+        // then
+        assertThat(account.getBalance() > 0, is(true));
+    }
+
+    @Test
+    public void getName_whenMatchersStartWith_thenFail() {
+        // given
+
+        // when
+
+        // then
+        assertThat(account.getName(), startsWith("xyz"));
     }
 }
