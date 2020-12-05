@@ -206,4 +206,15 @@ public class AssertTest {
         assertThat(name, is(notNullValue())); // 유용하지 않음
         assertThat(name, equalTo("my big fat acct"));
     }
+
+    @Test
+    public void testWithWorthlessAssertionComment() {
+        // given
+
+        // when
+        account.deposit(50);
+
+        // then
+        assertThat("account balance is 100", account.getBalance(), equalTo(50));
+    }
 }
