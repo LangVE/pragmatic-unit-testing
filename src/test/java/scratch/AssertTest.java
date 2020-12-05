@@ -5,6 +5,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -254,5 +257,18 @@ public class AssertTest {
         thrown.expectMessage("balance only 0");
 
         account.withdraw(100);
+    }
+
+    @Test
+    public void readsFromTestFile() throws IOException {
+        // given
+        String filename = "test.txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+        // when
+        writer.write("test data");
+        writer.close();
+
+        // then
     }
 }
