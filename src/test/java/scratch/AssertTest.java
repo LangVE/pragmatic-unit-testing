@@ -1,7 +1,9 @@
 package scratch;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 
@@ -241,5 +243,16 @@ public class AssertTest {
             // then
             assertThat(expected.getMessage(), equalTo("balance only 0"));
         }
+    }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void exceptionRule() {
+        thrown.expect(InsufficientFundsException.class);
+        thrown.expectMessage("balance only 0");
+
+        account.withdraw(100);
     }
 }
