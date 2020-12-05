@@ -6,8 +6,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AssertTest {
     private Account account;
@@ -229,4 +228,18 @@ public class AssertTest {
         // throw
     }
 
+    @Test
+    public void throwss_whenWithdrawingTooMuch() {
+        try {
+            // given
+
+            // when
+            account.withdraw(100);
+
+            fail();
+        } catch (InsufficientFundsException expected) {
+            // then
+            assertThat(expected.getMessage(), equalTo("balance only 0"));
+        }
+    }
 }
