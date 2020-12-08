@@ -285,4 +285,10 @@ public class AssertTest {
 
         // then
     }
+
+    @Test
+    @Ignore("don't forget me!")
+    public void somethingWeCannotHandleRightNow() {
+
+    }
 }
