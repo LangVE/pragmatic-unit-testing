@@ -42,4 +42,28 @@ public class ProfileTest {
         // then
         assertTrue(matches);
     }
+
+    @Test
+    public void matches() {
+        // given
+        profile.add(new Answer(question, Bool.FALSE));
+        criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.MustMatch));
+
+        // when
+        boolean matches = profile.matches(criteria);
+
+        // then
+        assertFalse(matches);
+
+        // given
+        profile.add(new Answer(question, Bool.FALSE));
+        criteria = new Criteria(); // 이전 코드 초기화
+        criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare));
+
+        // when
+        matches = profile.matches(criteria);
+
+        // then
+        assertTrue(matches);
+    }
 }
