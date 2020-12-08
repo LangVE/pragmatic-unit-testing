@@ -1,8 +1,6 @@
 package scratch;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.io.BufferedWriter;
@@ -16,9 +14,25 @@ import static org.junit.Assert.*;
 public class AssertTest {
     private Account account;
 
+    @BeforeClass
+    public static void initializeSomethingReallyExpensive() {
+        System.out.println("initializeSomethingReallyExpensive");
+    }
+
+    @AfterClass
+    public static void cleanUpSomethingReallyExpensive() {
+        System.out.println("cleanUpSomethingReallyExpensive");
+    }
+
     @Before
     public void createAccount() {
         account = new Account("my account");
+        System.out.println("createAccount");
+    }
+
+    @After
+    public void closeConnection() {
+        System.out.println("closeConnection");
     }
 
     @Test
