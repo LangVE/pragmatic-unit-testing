@@ -19,18 +19,28 @@ public class StatCompiler {
    private QuestionController controller = new QuestionController();
 
    public Map<String, Map<Boolean, AtomicInteger>> responsesByQuestion(
-           List<BooleanAnswer> answers) {
+           List<BooleanAnswer> answers, Map<Integer, String> questions) {
       Map<Integer, Map<Boolean, AtomicInteger>> responses = new HashMap<>();
       answers.stream().forEach(answer -> incrementHistogram(responses, answer));
-      return convertHistogramIdsToText(responses);
+      return convertHistogramIdsToText(responses, questions);
    }
 
    private Map<String, Map<Boolean, AtomicInteger>> convertHistogramIdsToText(
-           Map<Integer, Map<Boolean, AtomicInteger>> responses) {
+           Map<Integer, Map<Boolean, AtomicInteger>> responses,
+           Map<Integer, String> questions) {
       Map<String, Map<Boolean, AtomicInteger>> textResponses = new HashMap<>();
       responses.keySet().stream().forEach(id ->
-              textResponses.put(controller.find(id).getText(), responses.get(id)));
+              textResponses.put(questions.get(id), responses.get(id)));
       return textResponses;
+   }
+
+   public Map<Integer, String> questionText(List<BooleanAnswer> answers) {
+      Map<Integer, String> questions = new HashMap<>();
+      answers.stream().forEach(answer -> {
+         if (!questions.containsKey(answer.getQuestionId()))
+            questions.put(answer.getQuestionId(), controller.find(answer.getQuestionId()).getText());
+      });
+      return questions;
    }
 
    private void incrementHistogram(
@@ -39,6 +49,13 @@ public class StatCompiler {
       Map<Boolean, AtomicInteger> histogram =
               getHistogram(responses, answer.getQuestionId());
       histogram.get(Boolean.valueOf(answer.getValue())).getAndIncrement();
+   }
+
+   public Map<String, Map<Boolean, AtomicInteger>> responseByQuestion(List<BooleanAnswer> answers, Map<Integer, String> questions) {
+      Map<Integer, Map<Boolean, AtomicInteger>> responses = new HashMap<>();
+      answers.stream().forEach(answer -> incrementHistogram(responses, answer));
+
+      return convertHistogramIdsToText(responses, questions);
    }
 
    private Map<Boolean, AtomicInteger> getHistogram(
