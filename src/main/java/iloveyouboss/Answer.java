@@ -22,7 +22,7 @@ public class Answer {
       this.question = characteristic;
       this.i = characteristic.indexOf(matchingValue);
    }
-   
+
    public String getQuestionText() {
       return question.getText();
    }
@@ -41,6 +41,10 @@ public class Answer {
    }
 
    public Question getCharacteristic() {
+      return question;
+   }
+
+   public Question getQuestion() {
       return question;
    }
 }
