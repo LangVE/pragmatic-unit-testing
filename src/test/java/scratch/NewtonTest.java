@@ -28,5 +28,6 @@ public class NewtonTest {
 
         // then
         assertThat(result * result, closeTo(value, Newton.TOLERANCE));
+        assertThat(result, closeTo(Math.sqrt(value), Newton.TOLERANCE));
     }
 }
