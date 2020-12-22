@@ -18,11 +18,15 @@ public abstract class Question {
       this.text = text;
       this.answerChoices = answerChoices;
    }
-   
+
+   public int getId() {
+      return id;
+   }
+
    public String getText() {
       return text;
    }
-   
+
    public String getAnswerChoice(int i) {
       return answerChoices[i];
    }

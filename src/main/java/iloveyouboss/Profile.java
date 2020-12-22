@@ -8,7 +8,11 @@
 ***/
 package iloveyouboss;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Profile { 
    private Map<String,Answer> answers = new HashMap<>();
@@ -45,14 +49,20 @@ public class Profile {
          if (match) {         
             score += criterion.getWeight().getValue();
          }
-         anyMatches |= match;  
+         anyMatches |= match;
       }
-      if (kill)       
+      if (kill)
          return false;
-      return anyMatches; 
+      return anyMatches;
    }
 
    public int score() {
       return score;
+   }
+
+   public List<Answer> find(Predicate<Answer> pred) {
+      return answers.values().stream()
+              .filter(pred)
+              .collect(Collectors.toList());
    }
 }
