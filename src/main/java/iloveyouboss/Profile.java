@@ -32,8 +32,15 @@ public class Profile {
     }
 
     public boolean matches(Criteria criteria) {
-        score = 0;
+        calculateScore(criteria);
 
+        if (doseNotMeetAnyMustMatchCriterion(criteria))
+            return false;
+
+        return anyMatches(criteria);
+    }
+
+    private boolean doseNotMeetAnyMustMatchCriterion(Criteria criteria) {
         boolean kill = false;
 
         for (Criterion criterion : criteria) {
@@ -42,14 +49,17 @@ public class Profile {
             if (!match && criterion.getWeight() == Weight.MustMatch) {
                 kill = true;
             }
-            if (match) {
+        }
+        return kill;
+    }
+
+    private void calculateScore(Criteria criteria) {
+        score = 0;
+        for (Criterion criterion : criteria) {
+            if (criterion.matches(answerMatching(criterion))) {
                 score += criterion.getWeight().getValue();
             }
-
         }
-        if (kill)
-            return false;
-        return anyMatches(criteria);
     }
 
     private boolean anyMatches(Criteria criteria) {
