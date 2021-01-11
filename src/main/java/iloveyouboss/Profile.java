@@ -8,6 +8,7 @@
  ***/
 package iloveyouboss;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class Profile {
     private Map<String, Answer> answers = new HashMap<>();
+
     private int score;
     private String name;
 
@@ -33,52 +35,53 @@ public class Profile {
 
     public boolean matches(Criteria criteria) {
         calculateScore(criteria);
-
-        if (doseNotMeetAnyMustMatchCriterion(criteria))
+        if (doesNotMeetAnyMustMatchCriterion(criteria))
             return false;
-
         return anyMatches(criteria);
     }
 
-    private boolean doseNotMeetAnyMustMatchCriterion(Criteria criteria) {
-        boolean kill = false;
-
+    private boolean doesNotMeetAnyMustMatchCriterion(Criteria criteria) {
         for (Criterion criterion : criteria) {
             boolean match = criterion.matches(answerMatching(criterion));
-
-            if (!match && criterion.getWeight() == Weight.MustMatch) {
-                kill = true;
-            }
+            if (!match && criterion.getWeight() == Weight.MustMatch)
+                return true;
         }
-        return kill;
+        return false;
     }
 
     private void calculateScore(Criteria criteria) {
         score = 0;
-        for (Criterion criterion : criteria) {
-            if (criterion.matches(answerMatching(criterion))) {
+        for (Criterion criterion : criteria)
+            if (criterion.matches(answerMatching(criterion)))
                 score += criterion.getWeight().getValue();
-            }
-        }
     }
 
     private boolean anyMatches(Criteria criteria) {
         boolean anyMatches = false;
-
-        for (Criterion criterion : criteria) {
+        for (Criterion criterion : criteria)
             anyMatches |= criterion.matches(answerMatching(criterion));
-        }
-
         return anyMatches;
     }
 
     private Answer answerMatching(Criterion criterion) {
-        return answers.get(
-                criterion.getAnswer().getQuestionText());
+        return answers.get(criterion.getAnswer().getQuestionText());
     }
 
     public int score() {
         return score;
+    }
+
+    public List<Answer> classicFind(Predicate<Answer> pred) {
+        List<Answer> results = new ArrayList<Answer>();
+        for (Answer answer : answers.values())
+            if (pred.test(answer))
+                results.add(answer);
+        return results;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public List<Answer> find(Predicate<Answer> pred) {
