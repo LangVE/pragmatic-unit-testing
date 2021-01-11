@@ -132,7 +132,7 @@ public class ProfileTest {
         criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.MustMatch));
 
         // when
-        boolean matches = profile.matches(criteria);
+        boolean matches = profile.getMatchSet(criteria).matches();
 
         // then
         assertFalse(matches);
@@ -145,7 +145,7 @@ public class ProfileTest {
         criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare));
 
         // when
-        boolean matches = profile.matches(criteria);
+        boolean matches = profile.getMatchSet(criteria).matches();
 
         // then
         assertTrue(matches);
@@ -158,7 +158,7 @@ public class ProfileTest {
         criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
         criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
 
-        boolean matches = profile.matches(criteria);
+        boolean matches = profile.getMatchSet(criteria).matches();
 
         assertTrue(matches);
     }
@@ -170,7 +170,7 @@ public class ProfileTest {
         criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.MustMatch));
 
         // when
-        boolean matches = profile.matches(criteria);
+        boolean matches = profile.getMatchSet(criteria).matches();
 
         // then
         assertFalse(matches);
@@ -181,7 +181,7 @@ public class ProfileTest {
         criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare));
 
         // when
-        matches = profile.matches(criteria);
+        matches = profile.getMatchSet(criteria).matches();
 
         // then
         assertTrue(matches);

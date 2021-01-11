@@ -13,7 +13,7 @@ public class ProfilePool {
 
    public void score(Criteria criteria) {
       for (Profile profile : profiles)
-         profile.matches(criteria);
+         profile.getMatchSet(criteria).matches();
    }
 
    public List<Profile> ranked() {
