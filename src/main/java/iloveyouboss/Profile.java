@@ -40,20 +40,6 @@ public class Profile {
         return false;
     }
 
-    private void calculateScore(Criteria criteria) {
-        score = 0;
-        for (Criterion criterion : criteria)
-            if (criterion.matches(answerMatching(criterion)))
-                score += criterion.getWeight().getValue();
-    }
-
-    private boolean anyMatches(Criteria criteria) {
-        boolean anyMatches = false;
-        for (Criterion criterion : criteria)
-            anyMatches |= criterion.matches(answerMatching(criterion));
-        return anyMatches;
-    }
-
     private Answer answerMatching(Criterion criterion) {
         return answers.get(criterion.getAnswer().getQuestionText());
     }
