@@ -1,6 +1,7 @@
 package scratch;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,7 +22,7 @@ public class RectangleTest {
       assertThat(rectangle.area(), equalTo(50));
    }
 
-   //@Ignore
+   @Ignore
    @Test
    public void allowsDynamicallyChangingSize() {
       rectangle = new Rectangle(new Point(5, 5));

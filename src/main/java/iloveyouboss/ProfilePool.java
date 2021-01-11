@@ -1,7 +1,6 @@
 package iloveyouboss;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProfilePool {
@@ -13,12 +12,12 @@ public class ProfilePool {
 
    public void score(Criteria criteria) {
       for (Profile profile : profiles)
-         profile.matches(criteria);
+         profile.getMatchSet(criteria).matches();
    }
 
    public List<Profile> ranked() {
-      Collections.sort(profiles,
-              (p1, p2) -> ((Integer) p2.score()).compareTo(p1.score()));
+//      Collections.sort(profiles,
+//              (p1, p2) -> ((Integer) p2.score()).compareTo(p1.score()));
       return profiles;
    }
 }
