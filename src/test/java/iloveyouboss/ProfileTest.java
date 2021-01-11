@@ -74,14 +74,14 @@ public class ProfileTest {
         profile.add(new Answer(new PercentileQuestion(3, "3", new String[]{}), 0));
 
         // when
-        List<Answer> answers = profile.find(a -> a.getQuestion().getClass() == PercentileQuestion.class);
+        List<Answer> answers = profile.getAnswers().find(a -> a.getQuestion().getClass() == PercentileQuestion.class);
 
         // then
         assertThat(ids(answers), equalTo(new int[]{2, 3}));
 
         // given
         List<Answer> answersComplement =
-                profile.find(a -> a.getQuestion().getClass() != PercentileQuestion.class);
+                profile.getAnswers().find(a -> a.getQuestion().getClass() != PercentileQuestion.class);
 
         // when
         List<Answer> allAnswers = new ArrayList<Answer>();
@@ -112,7 +112,7 @@ public class ProfileTest {
 
         int numberOfTimes = 1000;
         long elapsedMs = run(numberOfTimes,
-                () -> profile.find(
+                () -> profile.getAnswers().find(
                         a -> a.getQuestion().getClass() == PercentileQuestion.class));
 
         assertTrue(elapsedMs < 1000);

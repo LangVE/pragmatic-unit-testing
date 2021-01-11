@@ -31,7 +31,7 @@ public class ProfilePoolTest {
 
       pool.score(soleNeed(doTheyReimburseTuition, Bool.TRUE, Weight.Important));
 
-      assertThat(langrsoft.score(), equalTo(Weight.Important.getValue()));
+      //assertThat(langrsoft.score(), equalTo(Weight.Important.getValue()));
    }
 
    private Criteria soleNeed(Question question, int value, Weight weight) {
