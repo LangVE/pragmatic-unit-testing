@@ -4,15 +4,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import util.Http;
+import util.HttpImpl;
 
 import java.io.IOException;
 
 public class AddressRetriever {
-   private Http http;
-
-   public AddressRetriever(Http http) {
-      this.http = http;
-   }
+   private Http http = new HttpImpl();
 
    public Address retrieve(double latitude, double longitude)
            throws IOException, ParseException {
