@@ -8,20 +8,25 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AddressRetrieverTest {
    @Test
    public void answersAppropriateAddressForValidCoordinates()
            throws IOException, ParseException {
       Http http = (String url) ->
-              "{\"address\":{"
-                      + "\"house_number\":\"324\","
-                      + "\"road\":\"North Tejon Street\","
-                      + "\"city\":\"Colorado Springs\","
-                      + "\"state\":\"Colorado\","
-                      + "\"postcode\":\"80903\","
-                      + "\"country_code\":\"us\"}"
-                      + "}";
+      {
+         if (!url.contains("lat=38.000000&lon=-104.000000"))
+            fail("url " + url + " does not contain correct params");
+         return "{\"address\":{"
+                 + "\"house_number\":\"324\","
+                 + "\"road\":\"North Tejon Street\","
+                 + "\"city\":\"Colorado Springs\","
+                 + "\"state\":\"Colorado\","
+                 + "\"postcode\":\"80903\","
+                 + "\"country_code\":\"us\"}"
+                 + "}";
+      };
       AddressRetriever retriever = new AddressRetriever(http);
 
       Address address = retriever.retrieve(38.0, -104.0);
