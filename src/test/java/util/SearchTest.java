@@ -1,5 +1,7 @@
 package util;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -14,10 +16,21 @@ import static util.ContainsMatches.containsMatches;
 
 public class SearchTest {
     private static final String A_TITLE = "1";
+    private InputStream stream;
+
+    @Before
+    public void turnOffLogging() {
+        Search.LOGGER.setLevel(Level.OFF);
+    }
+
+    @After
+    public void closeResources() throws IOException {
+        stream.close();
+    }
 
     @Test
     public void returnsMatchesShowingContextWhenSearchStringInContent() throws IOException {
-        InputStream stream = streamOn("There are certain queer times and occasions "
+        stream = streamOn("There are certain queer times and occasions "
                 + "in this strange mixed affair we call life when a man "
                 + "takes this whole universe for a vast practical joke, "
                 + "though the wit thereof he but dimly discerns, and more "
@@ -40,11 +53,10 @@ public class SearchTest {
     public void noMatchesReturnedWhenSearchStringNotInContent() throws IOException {
         URLConnection connection =
                 new URL("http://bit.ly/15sYPA7").openConnection();
-        InputStream inputStream = connection.getInputStream();
-        Search search = new Search(inputStream, "smelt", A_TITLE);
+        stream = connection.getInputStream();
+        Search search = new Search(stream, "smelt", A_TITLE);
         search.execute();
         assertTrue(search.getMatches().isEmpty());
-        inputStream.close();
     }
 
     private InputStream streamOn(String pageContent) {
