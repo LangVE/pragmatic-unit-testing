@@ -16,14 +16,14 @@ public class SearchTest {
     private static final String A_TITLE = "1";
 
     @Test
-    public void testSearch() throws IOException {
+    public void returnsMatchesShowingContextWhenSearchStringInContent() throws IOException {
         InputStream stream = streamOn("There are certain queer times and occasions "
                 + "in this strange mixed affair we call life when a man "
                 + "takes this whole universe for a vast practical joke, "
                 + "though the wit thereof he but dimly discerns, and more "
                 + "than suspects that the joke is at nobody's expense but "
                 + "his own.");
-        // search
+
         Search search = new Search(stream, "practical joke", A_TITLE);
         Search.LOGGER.setLevel(Level.OFF);
         search.setSurroundingCharacterCount(10);
@@ -34,15 +34,17 @@ public class SearchTest {
                         "or a vast practical joke, though t")
         }));
         stream.close();
+    }
 
-        // negative
+    @Test
+    public void noMatchesReturnedWhenSearchStringNotInContent() throws IOException {
         URLConnection connection =
                 new URL("http://bit.ly/15sYPA7").openConnection();
         InputStream inputStream = connection.getInputStream();
-        search = new Search(inputStream, "smelt", A_TITLE);
+        Search search = new Search(inputStream, "smelt", A_TITLE);
         search.execute();
         assertTrue(search.getMatches().isEmpty());
-        stream.close();
+        inputStream.close();
     }
 
     private InputStream streamOn(String pageContent) {
