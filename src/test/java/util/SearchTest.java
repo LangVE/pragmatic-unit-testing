@@ -38,7 +38,6 @@ public class SearchTest {
                 + "his own.");
 
         Search search = new Search(stream, "practical joke", A_TITLE);
-        Search.LOGGER.setLevel(Level.OFF);
         search.setSurroundingCharacterCount(10);
         search.execute();
         assertFalse(search.errored());
@@ -46,7 +45,6 @@ public class SearchTest {
                 new Match(A_TITLE, "practical joke",
                         "or a vast practical joke, though t")
         }));
-        stream.close();
     }
 
     @Test
