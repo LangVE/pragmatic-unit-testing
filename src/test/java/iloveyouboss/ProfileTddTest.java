@@ -12,6 +12,8 @@ public class ProfileTddTest {
     private Question question;
     private Answer answerThereIsRelocation;
     private Answer answerThereIsNotRelocation;
+    private BooleanQuestion questionReimbursesTuition;
+    private Answer answerDoesNotReimburseTuition;
 
     @Before
     public void createProfile() {
@@ -23,6 +25,9 @@ public class ProfileTddTest {
         question = new BooleanQuestion(1, "Relocation package");
         answerThereIsRelocation = new Answer(question, Bool.TRUE);
         answerThereIsNotRelocation = new Answer(question, Bool.FALSE);
+        questionReimbursesTuition = new BooleanQuestion(1, "Reimburses tuition?");
+        answerDoesNotReimburseTuition =
+                new Answer(questionReimbursesTuition, Bool.FALSE);
     }
 
     @Test
@@ -52,5 +57,16 @@ public class ProfileTddTest {
         boolean result = profileTdd.matches(criterion);
 
         assertFalse(result);
+    }
+
+    @Test
+    public void matchesWhenContainsMultipleAnswer() {
+        profileTdd.add(answerThereIsRelocation);
+        profileTdd.add(answerDoesNotReimburseTuition);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.DontCare);
+
+        boolean result = profileTdd.matches(criterion);
+
+        assertTrue(result);
     }
 }
