@@ -11,6 +11,7 @@ public class ProfileTddTest {
     private ProfileTdd profileTdd;
     private Question question;
     private Answer answerThereIsRelocation;
+    private Answer answerThereIsNotRelocation;
 
     @Before
     public void createProfile() {
@@ -21,6 +22,7 @@ public class ProfileTddTest {
     public void createQuestionAndAnswer() {
         question = new BooleanQuestion(1, "Relocation package");
         answerThereIsRelocation = new Answer(question, Bool.TRUE);
+        answerThereIsNotRelocation = new Answer(question, Bool.FALSE);
     }
 
     @Test
@@ -40,5 +42,15 @@ public class ProfileTddTest {
         boolean result = profileTdd.matches(criterion);
 
         assertTrue(result);
+    }
+
+    @Test
+    public void doesNotMatchWhenNoMatchingAnswer() {
+        profileTdd.add(answerThereIsNotRelocation);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.Important);
+
+        boolean result = profileTdd.matches(criterion);
+
+        assertFalse(result);
     }
 }
