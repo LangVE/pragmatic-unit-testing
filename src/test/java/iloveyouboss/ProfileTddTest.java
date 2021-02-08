@@ -1,16 +1,31 @@
 package iloveyouboss;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ProfileTddTest {
+
+    private ProfileTdd profileTdd;
+    private Question question;
+    private Answer answerThereIsRelocation;
+
+    @Before
+    public void createProfile() {
+        profileTdd = new ProfileTdd();
+    }
+
+    @Before
+    public void createQuestionAndAnswer() {
+        question = new BooleanQuestion(1, "Relocation package");
+        answerThereIsRelocation = new Answer(question, Bool.TRUE);
+    }
+
     @Test
     public void matchesNothingWhenProfileEmpty() {
-        ProfileTdd profileTdd = new ProfileTdd();
-        Question question = new BooleanQuestion(1, "Relocation package");
-        Criterion criterion = new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.DontCare);
 
         boolean result = profileTdd.matches(criterion);
 
@@ -19,11 +34,8 @@ public class ProfileTddTest {
 
     @Test
     public void matchesWhenProfileContainsMatchingAnswer() {
-        ProfileTdd profileTdd = new ProfileTdd();
-        Question question = new BooleanQuestion(1, "Relocation package?");
-        Answer answer = new Answer(question, Bool.TRUE);
-        profileTdd.add(answer);
-        Criterion criterion = new Criterion(answer, Weight.DontCare);
+        profileTdd.add(answerThereIsRelocation);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.DontCare);
 
         boolean result = profileTdd.matches(criterion);
 
