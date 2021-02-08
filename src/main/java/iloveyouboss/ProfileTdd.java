@@ -1,7 +1,13 @@
 package iloveyouboss;
 
 public class ProfileTdd {
+    private Answer answer;
+
     public boolean matches(Criterion criterion) {
-        return false;
+        return answer != null;
+    }
+
+    public void add(Answer answer) {
+        this.answer = answer;
     }
 }
