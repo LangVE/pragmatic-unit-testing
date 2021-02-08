@@ -3,8 +3,8 @@ package iloveyouboss;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.*;
 
 public class ProfileTddTest {
 
@@ -14,6 +14,8 @@ public class ProfileTddTest {
     private Answer answerThereIsNotRelocation;
     private BooleanQuestion questionReimbursesTuition;
     private Answer answerDoesNotReimburseTuition;
+    private Answer answerReimbursesTuition;
+    private Criteria criteria;
 
     @Before
     public void createProfile() {
@@ -28,6 +30,8 @@ public class ProfileTddTest {
         questionReimbursesTuition = new BooleanQuestion(1, "Reimburses tuition?");
         answerDoesNotReimburseTuition =
                 new Answer(questionReimbursesTuition, Bool.FALSE);
+        answerReimbursesTuition =
+                new Answer(questionReimbursesTuition, Bool.TRUE);
     }
 
     @Test
@@ -68,5 +72,46 @@ public class ProfileTddTest {
         boolean result = profileTdd.matches(criterion);
 
         assertTrue(result);
+    }
+
+    @Before
+    public void createCriteria() {
+        criteria = new Criteria();
+    }
+
+    @Test
+    public void doesNotMatchWhenNoneOfMultipleCriteriaMatch() {
+        profileTdd.add(answerDoesNotReimburseTuition);
+        criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
+        criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
+
+        assertFalse(profileTdd.matches(criteria));
+    }
+
+    @Test
+    public void matchesWhenAnyOfMultipleCriteriaMatch() {
+        profileTdd.add(answerThereIsRelocation);
+        criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
+        criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
+
+        assertTrue(profileTdd.matches(criteria));
+    }
+
+    @Test
+    public void matchesWhenCriterionIsDontCare() {
+        profileTdd.add(answerDoesNotReimburseTuition);
+        Criterion criterion =
+                new Criterion(answerReimbursesTuition, Weight.DontCare);
+
+        assertTrue(profileTdd.matches(criterion));
+    }
+
+    @Test
+    public void scoreIsZeroWhenThereAreNoMatches() {
+        criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
+
+        ProfileMatch match = profileTdd.match(criteria);
+
+        assertThat(match.getScore(), equalTo(0));
     }
 }
