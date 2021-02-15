@@ -3,12 +3,10 @@ package iloveyouboss;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ProfileTest {
     private Profile profile;
@@ -66,31 +64,31 @@ public class ProfileTest {
                 .mapToInt(a -> a.getQuestion().getId()).toArray();
     }
 
-    @Test
-    public void findsAnswersBasedOnPredicate() {
-        // given
-        profile.add(new Answer(new BooleanQuestion(1, "1"), Bool.FALSE));
-        profile.add(new Answer(new PercentileQuestion(2, "2", new String[]{}), 0));
-        profile.add(new Answer(new PercentileQuestion(3, "3", new String[]{}), 0));
-
-        // when
-        List<Answer> answers = profile.getAnswers().find(a -> a.getQuestion().getClass() == PercentileQuestion.class);
-
-        // then
-        assertThat(ids(answers), equalTo(new int[]{2, 3}));
-
-        // given
-        List<Answer> answersComplement =
-                profile.getAnswers().find(a -> a.getQuestion().getClass() != PercentileQuestion.class);
-
-        // when
-        List<Answer> allAnswers = new ArrayList<Answer>();
-        allAnswers.addAll(answersComplement);
-        allAnswers.addAll(answers);
-
-        // then
-        assertThat(ids(allAnswers), equalTo(new int[]{1, 2, 3}));
-    }
+//    @Test
+//    public void findsAnswersBasedOnPredicate() {
+//        // given
+//        profile.add(new Answer(new BooleanQuestion(1, "1"), Bool.FALSE));
+//        profile.add(new Answer(new PercentileQuestion(2, "2", new String[]{}), 0));
+//        profile.add(new Answer(new PercentileQuestion(3, "3", new String[]{}), 0));
+//
+//        // when
+//        List<Answer> answers = profile.getAnswers().find(a -> a.getQuestion().getClass() == PercentileQuestion.class);
+//
+//        // then
+//        assertThat(ids(answers), equalTo(new int[]{2, 3}));
+//
+//        // given
+//        List<Answer> answersComplement =
+//                profile.getAnswers().find(a -> a.getQuestion().getClass() != PercentileQuestion.class);
+//
+//        // when
+//        List<Answer> allAnswers = new ArrayList<Answer>();
+//        allAnswers.addAll(answersComplement);
+//        allAnswers.addAll(answers);
+//
+//        // then
+//        assertThat(ids(allAnswers), equalTo(new int[]{1, 2, 3}));
+//    }
 
     private long run(int times, Runnable func) {
         long start = System.nanoTime();
@@ -100,23 +98,23 @@ public class ProfileTest {
         return (stop - start) / 1000000;
     }
 
-    @Test
-    public void findAnswers() {
-        int dataSize = 5000;
-        for (int i = 0; i < dataSize; i++) {
-            profile.add(new Answer(new BooleanQuestion(i, String.valueOf(i)), Bool.FALSE));
-        }
-        profile.add(new Answer(
-                new PercentileQuestion(
-                        dataSize, String.valueOf(dataSize), new String[]{}), 0));
-
-        int numberOfTimes = 1000;
-        long elapsedMs = run(numberOfTimes,
-                () -> profile.getAnswers().find(
-                        a -> a.getQuestion().getClass() == PercentileQuestion.class));
-
-        assertTrue(elapsedMs < 1000);
-    }
+//    @Test
+//    public void findAnswers() {
+//        int dataSize = 5000;
+//        for (int i = 0; i < dataSize; i++) {
+//            profile.add(new Answer(new BooleanQuestion(i, String.valueOf(i)), Bool.FALSE));
+//        }
+//        profile.add(new Answer(
+//                new PercentileQuestion(
+//                        dataSize, String.valueOf(dataSize), new String[]{}), 0));
+//
+//        int numberOfTimes = 1000;
+//        long elapsedMs = run(numberOfTimes,
+//                () -> profile.getAnswers().find(
+//                        a -> a.getQuestion().getClass() == PercentileQuestion.class));
+//
+//        assertTrue(elapsedMs < 1000);
+//    }
 
     @Before
     public void create() {
